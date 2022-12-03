@@ -1,0 +1,11 @@
+{
+  "name": "C# (.NET)",
+  "image": "mcr.microsoft.com/devcontainers/dotnet:0-7.0",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/node:1": {},
+    "ghcr.io/devcontainers/features/python:1": {},
+    "ghcr.io/eitsupi/devcontainer-features/jq-likes:0": {}
+  },
+  "extensions": ["esbenp.prettier-vscode", "ms-dotnettools.csharp"]
+}

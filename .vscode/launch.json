@@ -1,0 +1,21 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "hot cli",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build hot cli",
+      "program": "${workspaceFolder}/src/Hot.Cli/bin/Debug/net7.0/Hot.Cli.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/Hot.Cli",
+      "console": "internalConsole",
+      "stopAtEntry": false
+    },
+    {
+      "name": ".NET Core Attach",
+      "type": "coreclr",
+      "request": "attach"
+    }
+  ]
+}
