@@ -6,8 +6,10 @@
   "editor.fontLigatures": true,
   "editor.formatOnSave": true,
   "editor.guides.bracketPairs": "active",
+  "editor.renderWhitespace": "none",
   "editor.semanticHighlighting.enabled": true,
   "editor.suggestSelection": "first",
+  "editor.tabSize": 2,
   "files.trimTrailingWhitespace": true,
   "files.exclude": {
     "**/.git": true,
