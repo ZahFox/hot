@@ -9,6 +9,15 @@ public interface ITool
 public interface IExeTool : ITool
 {
   public abstract Exe.Exe Exe { get; }
+}
+
+public interface IPackageManagerTool : ITool
+{
+  public abstract Task<IEnumerable<string>> ListPackageNames();
+}
+
+public interface IExePackageManagerTool : IExeTool, IPackageManagerTool
+{
 
 }
 
@@ -21,4 +30,11 @@ public abstract class Tool : ITool
 public abstract class ExeTool : Tool, IExeTool
 {
   public abstract Exe.Exe Exe { get; }
+}
+
+public abstract class PackageManagerTool : Tool, IPackageManagerTool
+{
+  public abstract Exe.Exe Exe { get; }
+
+  public abstract Task<IEnumerable<string>> ListPackageNames();
 }

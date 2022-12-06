@@ -17,6 +17,7 @@ async Task Main()
 static void ConfigureTools()
 {
   ToolBag.AddTool(new NodeJs());
+  ToolBag.AddTool(new Apt());
 }
 
 static Command ConfigureCli()
@@ -91,10 +92,13 @@ static Command ConfigureCli()
 
   async Task RunToolCommand(string name, List<string> args)
   {
-    var node = ToolBag.GetTool<IExeTool>("node");
-    var version = await node.Version();
-    Console.WriteLine($"Version: {version}");
-    Console.WriteLine($"Path: {node.Exe.Path}");
+    var apt = ToolBag.GetTool<IExePackageManagerTool>("apt");
+    var version = await apt.Version();
+    var packages = await apt.ListPackageNames();
+    Console.WriteLine($"Name:     {apt.Name}");
+    Console.WriteLine($"Version:  {version}");
+    Console.WriteLine($"Path:     {apt.Exe.Path}");
+    Console.WriteLine($"Packages: {packages.Count()}");
   }
 
   rootCommand.Add(helloCommand);
