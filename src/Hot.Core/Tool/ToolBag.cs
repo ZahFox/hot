@@ -11,7 +11,14 @@ public static class ToolBag
 
   public static T GetTool<T>(string name) where T : ITool
   {
-    // TODO: create custom error class if tool doesn't exist
-    return (T)tools[name];
+    try
+    {
+      var tool = (T)tools[name];
+      return tool;
+    }
+    catch (KeyNotFoundException)
+    {
+      throw new MissingToolException(name);
+    }
   }
 }

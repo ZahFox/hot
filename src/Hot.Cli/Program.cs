@@ -16,8 +16,10 @@ async Task Main()
 
 static void ConfigureTools()
 {
+  // TODO: These will eventually be part of a host/environment configuration
   ToolBag.AddTool(new NodeJs());
   ToolBag.AddTool(new Apt());
+  ToolBag.AddTool(new Git());
 }
 
 static Command ConfigureCli()
@@ -92,13 +94,24 @@ static Command ConfigureCli()
 
   async Task RunToolCommand(string name, List<string> args)
   {
-    var apt = ToolBag.GetTool<IExePackageManagerTool>("apt");
-    var version = await apt.Version();
-    var packages = await apt.ListPackageNames();
-    Console.WriteLine($"Name:     {apt.Name}");
-    Console.WriteLine($"Version:  {version}");
-    Console.WriteLine($"Path:     {apt.Exe.Path}");
-    Console.WriteLine($"Packages: {packages.Count()}");
+    try
+    {
+      var tool = ToolBag.GetTool<IExeTool>(name);
+      var version = await tool.Version();
+      Console.WriteLine($"Name:     {tool.Name}");
+      Console.WriteLine($"Version:  {version}");
+      Console.WriteLine($"Path:     {tool.Exe.Path}");
+    }
+    catch (MissingToolException err)
+    {
+      Console.Error.WriteLine(err.Message);
+      Environment.Exit(1);
+    }
+    catch (Exception err)
+    {
+      Console.Error.WriteLine("unexpected error", err);
+      Environment.Exit(1);
+    }
   }
 
   rootCommand.Add(helloCommand);

@@ -10,10 +10,29 @@ public class NodeJs : ExeTool
 
   public override async Task<string> Version()
   {
-    // TODO: add error handling if run fails (create a custom exception type for this)
-    var versionResult = await this.Exe.Run(new[] { "--version" });
+    var versionResult = await this.Exe.Run(new[] { "--version" }, new ExeRunOpts(Throw: true));
     var version = versionResult.Stdout.Trim();
     return version;
+  }
+}
+
+public class Git : ExeTool
+{
+  public override string Name => "git";
+
+  public override Exe.Exe Exe => new GitExe();
+
+  public override async Task<string> Version()
+  {
+    var versionResult = await this.Exe.Run(new[] { "--version" }, new ExeRunOpts(Throw: true));
+    var version = versionResult.Stdout.Trim();
+    var versionChunks = version.Split(' ');
+    if (versionChunks.Length != 3)
+    {
+      throw new InvalidVersionFormatException(this, version);
+    }
+
+    return versionChunks[2];
   }
 }
 
@@ -25,18 +44,15 @@ public class Apt : PackageManagerTool, IExePackageManagerTool
 
   public override async Task<string> Version()
   {
-    // TODO: add error handling if run fails (create a custom exception type for this)
-    var versionResult = await this.Exe.Run(new[] { "--version" });
+    var versionResult = await this.Exe.Run(new[] { "--version" }, new ExeRunOpts(Throw: true));
     var version = versionResult.Stdout.Trim();
     var versionChunks = version.Split(' ');
-    if (versionChunks.Length == 3)
+    if (versionChunks.Length != 3)
     {
-      return versionChunks[1];
+      throw new InvalidVersionFormatException(this, version);
     }
 
-
-    // TODO: add error handling if the version is in an unexpected format (create a custom exception type for this)
-    return version;
+    return versionChunks[1];
   }
 
   public override async Task<IEnumerable<string>> ListPackageNames()
