@@ -1,8 +1,7 @@
 ﻿using System.CommandLine;
-using Hot.Core;
-using Hot.Core.IO;
 using Hot.Core.Exe;
 using Hot.Core.Tool;
+using Hot.Core.Tool.Shell;
 
 await Main();
 
@@ -19,6 +18,7 @@ static void ConfigureTools()
   ToolBag.AddTool(new NodeJs());
   ToolBag.AddTool(new Apt());
   ToolBag.AddTool(new Git());
+  ToolBag.AddTool(new Sh());
 }
 
 static Command ConfigureCli()

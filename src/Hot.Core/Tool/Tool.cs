@@ -34,7 +34,10 @@ public abstract class ExeTool : Tool, IExeTool
 
 public abstract class PackageManagerTool : Tool, IPackageManagerTool
 {
-  public abstract Exe.Exe Exe { get; }
-
   public abstract Task<IEnumerable<string>> ListPackageNames();
+}
+
+public abstract class ExePackageManagerTool : PackageManagerTool, IExeTool
+{
+  public abstract Exe.Exe Exe { get; }
 }

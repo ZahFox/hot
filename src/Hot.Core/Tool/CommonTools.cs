@@ -36,7 +36,7 @@ public class Git : ExeTool
   }
 }
 
-public class Apt : PackageManagerTool, IExePackageManagerTool
+public class Apt : ExePackageManagerTool
 {
   public override string Name => "apt";
 

@@ -14,3 +14,18 @@ public class AptExe : Exe
 {
   public override string Name => "apt";
 }
+
+public class ShExe : Exe
+{
+  public override string Name => "sh";
+}
+
+public class BashExe : Exe
+{
+  public override string Name => "bash";
+}
+
+public class ZshExe : Exe
+{
+  public override string Name => "zsh";
+}
