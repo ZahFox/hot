@@ -6,8 +6,8 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build hot cli",
-      "program": "${workspaceFolder}/src/Hot.Cli/bin/Debug/net7.0/Hot.Cli.dll",
-      "args": [],
+      "program": "${workspaceFolder}/src/Hot.Cli/bin/Debug/net7.0/hot.exe",
+      "args": ["tool", "git"],
       "cwd": "${workspaceFolder}/src/Hot.Cli",
       "console": "internalConsole",
       "stopAtEntry": false
