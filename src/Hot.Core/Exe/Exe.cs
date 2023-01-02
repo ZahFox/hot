@@ -85,20 +85,40 @@ static class ExeUtils
   public static string FindExePath(string exe)
   {
     exe = Environment.ExpandEnvironmentVariables(exe);
-    if (!File.Exists(exe))
+    if (File.Exists(exe))
     {
-      if (Path.GetDirectoryName(exe) == String.Empty)
+      return Path.GetFullPath(exe);
+    }
+
+    if (Path.GetDirectoryName(exe) == String.Empty)
+    {
+      foreach (string test in (Environment.GetEnvironmentVariable("PATH") ?? "").Split(ExePathDelimeter))
       {
-        foreach (string test in (Environment.GetEnvironmentVariable("PATH") ?? "").Split(ExePathDelimeter))
+        string path = test.Trim();
+
+        if (String.IsNullOrEmpty(path))
         {
-          string path = test.Trim();
-          if (!String.IsNullOrEmpty(path) && File.Exists(path = Path.Combine(path, exe)))
+          continue;
+        }
+
+        path = Path.Combine(path, exe);
+        if (File.Exists(path))
+        {
+          return Path.GetFullPath(path);
+        }
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+          path = path + ".exe";
+          if (File.Exists(path))
+          {
             return Path.GetFullPath(path);
+          }
         }
       }
-      throw new FileNotFoundException(new FileNotFoundException().Message, exe);
     }
-    return Path.GetFullPath(exe);
+
+    throw new FileNotFoundException(new FileNotFoundException().Message, exe);
   }
 
   public static async Task<ExeResult> RunExe(IExe exe)
