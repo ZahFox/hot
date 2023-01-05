@@ -1,7 +1,7 @@
 ﻿using System.CommandLine;
-using Hot.Core.Exe;
 using Hot.Core.Tool;
 using Hot.Core.Tool.Shell;
+using Hot.Core.Host;
 
 await Main();
 
@@ -24,8 +24,8 @@ static void ConfigureTools()
 static Command ConfigureCli()
 {
   var rootCommand = new RootCommand();
-  var exeCommand = new Command("exe", "Run an executable file.");
   var toolCommand = new Command("tool", "Use one of the common system tools.");
+  var hostCommand = new Command("host", "Gather information about the host.");
 
   var msgOption = new Option<string>(
       aliases: new[] { "-n", "--name" },
@@ -57,13 +57,6 @@ static Command ConfigureCli()
   )
   { Arity = ArgumentArity.ZeroOrMore };
 
-  async Task RunExeCommand(string name, List<string> args)
-  {
-    var exe = new Exe { Name = name, Args = args.AsReadOnly() };
-    var result = await exe.Run();
-    Console.Write(result.Stdout);
-  }
-
   async Task RunToolCommand(string name, List<string> args)
   {
     try
@@ -86,16 +79,27 @@ static Command ConfigureCli()
     }
   }
 
-  rootCommand.Add(exeCommand);
-  rootCommand.Add(toolCommand);
+  void RunHostCommand()
+  {
+    try
+    {
+      OS.PrintTargetRuntime();
+    }
+    catch (Exception err)
+    {
+      Console.Error.WriteLine("unexpected error", err);
+      Environment.Exit(1);
+    }
+  }
 
-  exeCommand.Add(exeNameArg);
-  exeCommand.Add(exeArgsArg);
+  rootCommand.Add(toolCommand);
+  rootCommand.Add(hostCommand);
+
   toolCommand.Add(toolNameArg);
   toolCommand.Add(toolArgsArg);
-
-  exeCommand.SetHandler(RunExeCommand, exeNameArg, exeArgsArg);
   toolCommand.SetHandler(RunToolCommand, toolNameArg, toolArgsArg);
+
+  hostCommand.SetHandler(RunHostCommand);
 
   return rootCommand;
 }
