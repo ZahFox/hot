@@ -2,7 +2,7 @@ using System.Text;
 
 namespace Hot.Core.IO;
 
-public class VoidTextWriter : TextWriter
+public sealed class VoidTextWriter : TextWriter
 {
   public override void Write(char value) { }
 
